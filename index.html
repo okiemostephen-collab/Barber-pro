@@ -1,0 +1,296 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111315">
+  <meta name="description" content="Book your next haircut with BarberPro.">
+  <title>BarberPro | Book a haircut</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Load Supabase BEFORE app.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js" defer></script>
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="BarberPro home">
+      <span class="brand-mark">B</span>
+      <span class="brand-copy">
+        <strong>BARBERPRO</strong>
+        <small>YOUR LOOK. YOUR TIME.</small>
+      </span>
+    </a>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <button class="nav-btn active" type="button" data-view="customer">Book a cut</button>
+      <button class="nav-btn" type="button" data-view="admin">Barber dashboard</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- CUSTOMER BOOKING PAGE -->
+    <section id="customerView">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">LOOK SHARP. FEEL READY.</p>
+          <h1>Your next great cut<br><span>starts here.</span></h1>
+          <p class="hero-text">
+            Choose your style, pick a convenient time, and book your appointment with ease.
+          </p>
+          <a class="primary-link" href="#booking">Book your appointment</a>
+        </div>
+
+        <div class="hero-art" aria-hidden="true">
+          <div class="hero-circle">B</div>
+          <span>BARBER<br>PRO</span>
+        </div>
+      </section>
+
+      <section class="section-wrap" id="services">
+        <div class="section-heading">
+          <p class="eyebrow">THE SERVICE MENU</p>
+          <h2>Find your fresh look.</h2>
+          <p>Choose from our available haircut services.</p>
+        </div>
+        <div id="serviceGrid" class="service-grid"></div>
+      </section>
+
+      <section class="booking-section section-wrap" id="booking">
+        <div class="section-heading">
+          <p class="eyebrow">RESERVE YOUR TIME</p>
+          <h2>Book an appointment.</h2>
+          <p>Enter your details below. Fields marked * are required.</p>
+        </div>
+
+        <form id="bookingForm" class="panel form-grid">
+          <label class="field full">Full name *
+            <input id="customerName" name="name" type="text"
+              autocomplete="name" placeholder="Your full name" required>
+          </label>
+
+          <label class="field">Phone number *
+            <input id="customerPhone" name="phone" type="tel"
+              autocomplete="tel" placeholder="e.g. 08012345678" required>
+          </label>
+
+          <label class="field">Choose a haircut *
+            <select id="serviceSelect" name="service" required>
+              <option value="">Choose a haircut</option>
+            </select>
+          </label>
+
+          <div class="price-line full">
+            <span>Selected service price</span>
+            <strong id="selectedPrice">₦0</strong>
+          </div>
+
+          <label class="field">Appointment date *
+            <input id="bookingDate" name="date" type="date" required>
+          </label>
+
+          <label class="field">Appointment time *
+            <input id="bookingTime" name="time" type="time" required>
+          </label>
+
+          <label class="field full">Additional notes (optional)
+            <textarea id="bookingNotes" name="notes" rows="3"
+              placeholder="Anything the barber should know?"></textarea>
+          </label>
+
+          <div class="full form-actions">
+            <button class="primary-button" type="submit">Submit booking</button>
+            <p id="bookingMessage" class="message" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </section>
+    </section>
+
+    <!-- BARBER DASHBOARD -->
+    <section id="adminView" class="hidden section-wrap dashboard-wrap">
+
+      <div class="section-heading">
+        <p class="eyebrow">BARBERPRO MANAGEMENT</p>
+        <h1>Barber dashboard</h1>
+        <p>Review appointments and manage daily shop records.</p>
+      </div>
+
+      <!-- ADMIN LOGIN -->
+      <section id="adminLogin" class="panel dashboard-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">SECURE ADMIN ACCESS</p>
+            <h2>Barber login</h2>
+          </div>
+        </div>
+
+        <form id="adminLoginForm" class="stack-form">
+          <label class="field">Admin email
+            <input
+              id="adminEmail"
+              type="email"
+              autocomplete="username"
+              placeholder="Enter your admin email"
+              required
+            >
+          </label>
+
+          <label class="field">Password
+            <input
+              id="adminPassword"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Enter your password"
+              required
+            >
+          </label>
+
+          <button class="primary-button" type="submit">LOGIN TO DASHBOARD</button>
+
+          <p id="loginMessage" class="message" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <!-- DASHBOARD CONTENT: HIDDEN UNTIL LOGIN -->
+      <div id="dashboardContent" class="hidden">
+
+        <div class="panel dashboard-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">ADMINISTRATION</p>
+              <h2>Dashboard controls</h2>
+            </div>
+            <button id="logoutButton" class="primary-button" type="button">
+              Sign out
+            </button>
+          </div>
+
+          <p id="dashboardMessage" class="message" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="panel date-panel">
+          <label class="field">Dashboard date
+            <input id="dashboardDate" type="date">
+          </label>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span>Appointments</span>
+            <strong id="statBookings">0</strong>
+          </article>
+
+          <article class="stat-card">
+            <span>Completed sales</span>
+            <strong id="statSales">₦0</strong>
+          </article>
+
+          <article class="stat-card">
+            <span>Expenses</span>
+            <strong id="statExpenses">₦0</strong>
+          </article>
+
+          <article class="stat-card">
+            <span>Net total</span>
+            <strong id="statNet">₦0</strong>
+          </article>
+        </div>
+
+        <section class="panel dashboard-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">SCHEDULE</p>
+              <h2>Appointments</h2>
+            </div>
+          </div>
+
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Service</th>
+                  <th>Time</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+
+              <tbody id="appointmentsBody">
+                <tr>
+                  <td colspan="5" class="empty">No appointments for this date yet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="dashboard-columns">
+          <section class="panel dashboard-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">MENU SETTINGS</p>
+                <h2>Service prices</h2>
+              </div>
+            </div>
+            <div id="adminServices" class="admin-services"></div>
+          </section>
+
+          <section class="panel dashboard-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">SHOP RECORDS</p>
+                <h2>Record an expense</h2>
+              </div>
+            </div>
+
+            <form id="expenseForm" class="stack-form">
+              <label class="field">Expense description
+                <input id="expenseName" type="text"
+                  placeholder="e.g. Blade refill" required>
+              </label>
+
+              <label class="field">Amount (₦)
+                <input id="expenseAmount" type="number"
+                  min="1" step="1" placeholder="e.g. 2500" required>
+              </label>
+
+              <button class="primary-button" type="submit">Save expense</button>
+            </form>
+
+            <div class="subsection-heading">
+              <h3>Today's expenses</h3>
+            </div>
+
+            <div id="expenseList" class="simple-list">
+              <p class="form-note">No expenses recorded for this day.</p>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel dashboard-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">CUSTOMER RECORDS</p>
+              <h2>Customers <small id="customerCount">0 customers</small></h2>
+            </div>
+          </div>
+
+          <div id="customerList" class="customer-list">
+            <p class="empty">No customers yet.</p>
+          </div>
+        </section>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span class="brand-mark small-mark">B</span>
+    <p>BARBERPRO · YOUR LOOK. YOUR TIME.</p>
+  </footer>
+</body>
+</html>
