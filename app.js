@@ -9,6 +9,7 @@
 const SUPABASE_URL = "https://plokfuphzuyqtlbkjchp.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_0uV82cRokH-vR61SZWBE1g_ykq8iBCH";
 const SUPABASE_FUNCTION_URL = "https://plokfuphzuyqtlbkjchp.supabase.co/functions/v1/barberpro-booking";
+const ADMIN_USER_ID = "00969825-e0d5-4a9b-9b83-81ec1bce6063";
 const STORAGE_KEY = "barberpro-demo-v1";
 
 if (!window.supabase?.createClient) {
@@ -778,6 +779,11 @@ document.querySelector("#adminLoginForm")?.addEventListener(
 
       if (error) throw error;
 
+      if (data.user?.id !== ADMIN_USER_ID) {
+        await db.auth.signOut();
+        throw new Error("This account does not have BarberPro administrator access.");
+      }
+
       currentSession = data.session;
       recoveryMode = false;
 
@@ -846,6 +852,20 @@ function registerAuthStateListener() {
       recoveryMode = true;
       activatePasswordUpdateMode();
       showView("admin");
+      return;
+    }
+
+    if (session && session.user?.id !== ADMIN_USER_ID) {
+      currentSession = null;
+      recoveryMode = false;
+      showAdminScreen();
+      showLoginMessage(
+        "This account does not have BarberPro administrator access.",
+        "error"
+      );
+      window.setTimeout(() => {
+        db.auth.signOut().catch(error => console.error("Sign-out error:", error));
+      }, 0);
       return;
     }
 
@@ -1666,9 +1686,18 @@ async function startBarberPro() {
 
     if (error) throw error;
 
-    currentSession = data.session;
-    recoveryMode = false;
+    if (data.session && data.session.user?.id !== ADMIN_USER_ID) {
+      await db.auth.signOut();
+      currentSession = null;
+      showLoginMessage(
+        "This account does not have BarberPro administrator access.",
+        "error"
+      );
+    } else {
+      currentSession = data.session;
+    }
 
+    recoveryMode = false;
     showAdminScreen();
 
   } catch (error) {
