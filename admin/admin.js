@@ -19,7 +19,7 @@
   ]);
   const failure=a.error||e.error||c.error||s.error;
   if(failure){$("status").textContent=failure.message;return;}
-  const ap=a.data||[],ex=e.data||[],cu=c.data||[],sv=s.data||[];
+  const ap=a.data||[],ex=e.data||[],cu=c.data||[],sv=[...new Map((s.data||[]).map(x=>[x.name,x])).values()];
   $("total").textContent=ap.length;
   const sales=ap.filter(x=>x.status==="completed").reduce((sum,x)=>sum+Number(x.final_price??x.price??0),0);
   const cost=ex.reduce((sum,x)=>sum+Number(x.amount||0),0);
