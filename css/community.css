@@ -1,0 +1,26 @@
+/* BarberPro Community & Reviews page */
+.community-intro{margin:18px 0 26px;border:1px solid rgba(239,184,91,.25);background:linear-gradient(120deg,rgba(239,184,91,.1),rgba(16,24,27,.9))}
+.community-intro p:last-child{color:#f2c574;font-weight:700}
+.community-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.85fr);gap:22px;align-items:start}
+.community-main,.community-side{min-width:0}
+.community-compose{margin-bottom:24px}
+.community-feed,.community-reviews{display:grid;gap:16px}
+.community-post,.community-review{padding:20px;border:1px solid #303b3e;border-radius:18px;background:#151d20;overflow-wrap:anywhere}
+.community-post-head,.community-review>div{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.community-post-head small,.community-comment small,.community-review small{display:block;color:#9eaaa4;font-size:12px;margin-top:5px}
+.community-post-content{white-space:pre-wrap;line-height:1.7;color:#f1eee8}
+.community-delete{background:transparent;border:1px solid #80504a;color:#ffaaa0;border-radius:9px;padding:7px 10px}
+.community-comments{border-top:1px solid #303b3e;margin-top:16px;padding-top:12px}
+.community-comments h4{margin:0 0 10px;color:#f2c574}
+.community-comment{padding:10px 12px;margin:8px 0;background:#101719;border-radius:12px}
+.community-comment p{margin:6px 0;color:#d8dfda;white-space:pre-wrap}
+.community-comment-form{display:flex;gap:9px;margin-top:12px}
+.community-comment-form input{flex:1;min-width:0}
+.community-comment-form .gold-button{width:auto;white-space:nowrap}
+.community-side{display:grid;gap:18px}
+.community-side .panel{min-width:0}
+.review-stars{color:#f2c574;letter-spacing:2px;font-size:17px}
+.community-review p{line-height:1.6;white-space:pre-wrap;color:#d9e0db}
+#communityMessage,#reviewMessage{color:#f2c574}
+@media(max-width:800px){.community-layout{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:560px){.community-post,.community-review{padding:15px}.community-comment-form{flex-direction:column}.community-comment-form .gold-button{width:100%}}
