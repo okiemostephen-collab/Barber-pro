@@ -1,11 +1,17 @@
-/* BarberPro customer dashboard */
+/* BarberPro customer dashboard — show the account immediately, enrich when profile arrives */
 (() => {
  document.addEventListener("barberpro:ready",async event=>{
- const db=window.barberProSupabase,user=event.detail.user;
- const {data:profile,error}=await db.from("customers").select("full_name,phone").eq("auth_user_id",user.id).maybeSingle();
- const name=profile?.full_name||user.email;
- const target=document.getElementById("customerName");if(target)target.textContent=name;
- const msg=document.getElementById("dashboardMessage");if(msg)msg.textContent=error?"Your account is active. Profile details could not be loaded.":"Welcome back, "+name+".";
- document.getElementById("logoutButton")?.addEventListener("click",()=>window.logoutCustomer());
+  const user=event.detail.user;
+  const target=document.getElementById("customerName");
+  const msg=document.getElementById("dashboardMessage");
+  if(target)target.textContent=user.user_metadata?.full_name||user.email||"Customer";
+  document.getElementById("logoutButton")?.addEventListener("click",()=>window.logoutCustomer());
+  try{
+   const profile=await event.detail.customerPromise;
+   if(profile?.__error)throw profile.__error;
+   const name=profile?.full_name||user.email||"Customer";
+   if(target)target.textContent=name;
+   if(msg)msg.textContent="Welcome back, "+name+".";
+  }catch(_){if(msg)msg.textContent="Your account is active. Some profile details are temporarily unavailable.";}
  });
 })();
