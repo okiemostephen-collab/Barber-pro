@@ -1,1 +1,21 @@
-(()=>{const URL="https://plokfuphzuyqtlbkjchp.supabase.co",KEY="sb_publishable_0uV82cRokH-vR61SZWBE1g_ykq8iBCH";document.addEventListener("barberpro:ready",async e=>{const db=window.barberProSupabase;const user=e.detail.user;const {data:customer,error:ce}=await db.from("customers").select("id").eq("auth_user_id",user.id).single();if(ce||!customer){document.getElementById("loyaltyTitle").textContent="We couldn't load your profile";return;}const {data:rows,error}=await db.from("appointments").select("created_at,status,loyalty_reward_redeemed").eq("customer_id",customer.id).order("created_at",{ascending:true});if(error){document.getElementById("loyaltyTitle").textContent="Progress temporarily unavailable";return;}const all=rows||[];let last=-1;for(let i=0;i<all.length;i++)if(all[i].loyalty_reward_redeemed&&all[i].status!=="cancelled")last=i;const completed=all.slice(last+1).filter(x=>x.status==="completed").length;const count=Math.min(completed,4),ready=completed>=4;document.getElementById("loyaltyTitle").textContent=ready?"Your 25% reward is unlocked!":count+" of 4 completed haircuts";document.getElementById("loyaltyMessage").textContent=ready?"Your next eligible booking will automatically receive 25% off.":"Complete "+(4-count)+" more "+((4-count)===1?"haircut":"haircuts")+" to unlock your reward.";document.getElementById("loyaltyBar").style.width=(count/4*100)+"%";document.getElementById("loyaltyProgress").setAttribute("aria-valuenow",String(count));document.querySelectorAll("#loyaltyStamps span").forEach((x,i)=>x.classList.toggle("complete",i<count));document.getElementById("loyaltyRewardText").textContent=ready?"Available on your next booking. Once used, a new four-visit cycle begins.":"Every four completed visits unlock 25% off your next haircut.";});})();
+/* BarberPro Loyalty Club — shared profile cache, same four-visit reward rules */
+document.addEventListener("barberpro:ready",async event=>{
+ const byId=id=>document.getElementById(id);
+ try{
+  const customer=await event.detail.customerPromise;
+  if(customer?.__error)throw customer.__error;
+  if(!customer?.id)throw new Error("Customer profile unavailable");
+  const {data:rows,error}=await window.barberProSupabase.from("appointments").select("created_at,status,loyalty_reward_redeemed").eq("customer_id",customer.id).order("created_at",{ascending:true});
+  if(error)throw error;
+  const all=rows||[];let last=-1;
+  for(let i=0;i<all.length;i++)if(all[i].loyalty_reward_redeemed&&all[i].status!=="cancelled")last=i;
+  const completed=all.slice(last+1).filter(x=>x.status==="completed").length;
+  const count=Math.min(completed,4),ready=completed>=4,remaining=4-count;
+  byId("loyaltyTitle").textContent=ready?"Your 25% reward is unlocked!":count+" of 4 completed haircuts";
+  byId("loyaltyMessage").textContent=ready?"Your next eligible booking will automatically receive 25% off.":"Complete "+remaining+" more "+(remaining===1?"haircut":"haircuts")+" to unlock your reward.";
+  byId("loyaltyBar").style.width=(count/4*100)+"%";
+  byId("loyaltyProgress").setAttribute("aria-valuenow",String(count));
+  document.querySelectorAll("#loyaltyStamps span").forEach((x,i)=>x.classList.toggle("complete",i<count));
+  byId("loyaltyRewardText").textContent=ready?"Available on your next booking. Once used, a new four-visit cycle begins.":"Every four completed visits unlock 25% off your next haircut.";
+ }catch(_){byId("loyaltyTitle").textContent="Progress temporarily unavailable";byId("loyaltyMessage").textContent="Please refresh in a moment to check your rewards.";}
+});
