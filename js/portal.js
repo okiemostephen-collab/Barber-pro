@@ -1,4 +1,4 @@
-/* BarberPro customer portal: resilient session and profile initialization */
+/* BarberPro customer portal: load the verified Supabase profile before exposing it to pages */
 (()=>{
  const $=id=>document.getElementById(id);
  const showStartupError=message=>{
@@ -24,10 +24,8 @@
    if(user.id===ADMIN){location.replace("admin/admin-dashboard.html");return;}
    window.barberProCustomer=user;
    const cached=readCache(PROFILE_KEY,user.id);
-   let resolveProfile;
-   let settled=false;
+   let resolveProfile,settled=false;
    const customerPromise=new Promise(resolve=>{resolveProfile=value=>{if(!settled){settled=true;resolve(value);}};});
-   if(cached)resolveProfile(cached);
    document.dispatchEvent(new CustomEvent("barberpro:ready",{detail:{user,customerPromise,profileCached:!!cached}}));
    try{
     const result=await withTimeout(db.from("customers").select("id,full_name,phone").eq("auth_user_id",user.id).maybeSingle(),12000,"Loading your profile");
@@ -37,7 +35,8 @@
     resolveProfile(result.data);
     document.dispatchEvent(new CustomEvent("barberpro:profile-updated",{detail:{profile:result.data}}));
    }catch(profileError){
-    if(!cached)resolveProfile({__error:profileError});
+    if(cached)resolveProfile(cached);
+    else resolveProfile({__error:profileError});
     document.dispatchEvent(new CustomEvent("barberpro:profile-error",{detail:{error:profileError}}));
    }
   }).catch(error=>{
