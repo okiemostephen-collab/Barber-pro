@@ -26,7 +26,9 @@
    const cached=readCache(PROFILE_KEY,user.id);
    let resolveProfile,settled=false;
    const customerPromise=new Promise(resolve=>{resolveProfile=value=>{if(!settled){settled=true;resolve(value);}};});
-   document.dispatchEvent(new CustomEvent("barberpro:ready",{detail:{user,customerPromise,profileCached:!!cached}}));
+   // Defer the ready event until all defer-loaded page scripts have registered listeners.
+   // Promise callbacks can run between defer scripts; dispatching immediately loses the event.
+   setTimeout(()=>document.dispatchEvent(new CustomEvent("barberpro:ready",{detail:{user,customerPromise,profileCached:!!cached}})),0);
    try{
     const result=await withTimeout(db.from("customers").select("id,full_name,phone").eq("auth_user_id",user.id).maybeSingle(),8000,"Loading your profile");
     if(result.error)throw result.error;
