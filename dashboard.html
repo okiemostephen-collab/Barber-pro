@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Dashboard | BarberPro</title>
+
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/portal.js" defer></script>
+    <script src="js/dashboard.js" defer></script>
+</head>
+
+<body>
+
+    <header class="main-header">
+
+        <a href="dashboard.html" class="brand">
+            <span class="brand-mark">B</span>
+            <span>BARBERPRO</span>
+        </a>
+
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="booking.html">Book a Cut</a>
+            <a href="gallery.html">Haircuts</a>
+            <a href="haircare.html">Haircare</a>
+            <a href="appointments.html">My Appointments</a>
+        </nav>
+
+    </header>
+
+    <main class="page-container">
+
+        <section class="page-heading">
+
+            <p class="eyebrow">YOUR LOOK. YOUR TIME.</p>
+
+            <h1>Welcome, <span id="customerName">Customer</span></h1>
+
+            <p>
+                Your personal BarberPro space.
+                Manage your appointments and discover your next look.
+            </p>
+
+        </section>
+
+        <section class="dashboard-welcome">
+
+            <div>
+                <h2>Ready for a fresh look?</h2>
+
+                <p>
+                    Book your next haircut with ease.
+                    Choose your preferred style and appointment time.
+                </p>
+
+                <a href="booking.html" class="gold-button">
+                    Book an Appointment
+                </a>
+            </div>
+
+        </section>
+
+        <section class="dashboard-section">
+
+            <div class="section-heading">
+                <p class="eyebrow">YOUR BARBERPRO</p>
+                <h2>Explore Your Dashboard</h2>
+                <p>Choose what you would like to do.</p>
+            </div>
+
+            <div class="dashboard-grid">
+
+                <article class="dashboard-card">
+                    <h3>Book a Haircut</h3>
+                    <p>Choose a service and reserve your preferred time.</p>
+                    <a href="booking.html">Book now →</a>
+                </article>
+
+                <article class="dashboard-card">
+                    <h3>Haircut Gallery</h3>
+                    <p>Explore different haircut styles and find inspiration.</p>
+                    <a href="gallery.html">Explore styles →</a>
+                </article>
+
+                <article class="dashboard-card">
+                    <h3>Hair Maintenance</h3>
+                    <p>Learn how to maintain your haircut and healthy hair.</p>
+                    <a href="haircare.html">Read guidelines →</a>
+                </article>
+
+                <article class="dashboard-card">
+                    <h3>My Appointments</h3>
+                    <p>View your bookings and appointment information.</p>
+                    <a href="appointments.html">View appointments →</a>
+                </article>
+
+                <article class="dashboard-card">
+                    <h3>My Profile</h3>
+                    <p>View and manage your customer information.</p>
+                    <a href="profile.html">View profile →</a>
+                </article>
+
+            </div>
+
+        </section>
+
+        <section class="dashboard-account">
+
+            <h2>Your Account</h2>
+
+            <p id="dashboardMessage">
+                Loading your account information...
+            </p>
+
+            <button
+                type="button"
+                id="logoutButton"
+                class="gold-button"
+            >
+                Log Out
+            </button>
+
+        </section>
+
+    </main>
+
+    <footer class="main-footer">
+        <p>© 2026 BarberPro. Your Look. Your Time.</p>
+    </footer>
+
+</body>
+</html>
