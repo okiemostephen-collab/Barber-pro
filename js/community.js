@@ -41,10 +41,9 @@
  document.addEventListener("barberpro:ready",async event=>{
   try{
    user=event.detail.user;db=window.barberProSupabase;
-   const profile=await event.detail.customerPromise;
-   if(profile?.__error)throw profile.__error;
-   memberName=profile?.full_name||user.user_metadata?.full_name||"BarberPro member";
+   memberName=user.user_metadata?.full_name||user.email?.split("@")[0]||"BarberPro member";
    ready=true;await load();
+   event.detail.customerPromise.then(profile=>{if(profile&&!profile.__error){memberName=profile.full_name||memberName;}}).catch(()=>{});
   }catch(error){note("communityMessage",error?.message||"Could not connect to the community. Refresh and sign in again.");}
  });
  $("postForm")?.addEventListener("submit",async e=>{
