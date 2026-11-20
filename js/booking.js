@@ -21,8 +21,19 @@
  const image=document.getElementById("selectedStyleImage"),title=document.getElementById("selectedStyleName"),description=document.getElementById("selectedStyleDescription");
  const today=new Date();date.min=[today.getFullYear(),String(today.getMonth()+1).padStart(2,"0"),String(today.getDate()).padStart(2,"0")].join("-");
  function showStyle(name){const s=styles[name];if(!s)return;title.textContent=name;description.textContent=s.price>0?s.desc+"  Price: ₦"+s.price.toLocaleString("en-NG"):s.desc+"  This style is currently inspiration-only; its service price has not been confirmed.";const xs=["0%","33.333%","66.667%","100%"],ys=["0%","50%","100%"];image.src=s.img;image.alt=name+" haircut inspiration photograph";}
- const requested=new URLSearchParams(location.search).get("service");if(requested&&styles[requested]){select.value=requested;showStyle(requested);}
+ const requested=new URLSearchParams(location.search).get("service");
+ async function loadLivePrices(){
+  try{
+   const {data,error}=await db.from("services").select("name,price,updated_at").order("updated_at",{ascending:true});
+   if(error)throw error;
+   (data||[]).forEach(row=>{if(styles[row.name])styles[row.name].price=Number(row.price);});
+   Array.from(select.options).forEach(option=>{const style=styles[option.value];if(style&&style.price>0)option.textContent=option.value+" — ₦"+style.price.toLocaleString("en-NG");});
+   if(select.value)showStyle(select.value);
+  }catch(error){console.error("Could not load live service prices:",error);if(msg)msg.textContent="Prices may be out of date. Please confirm the current price with the barber.";}
+ }
+ if(requested&&styles[requested]){select.value=requested;showStyle(requested);}
  select.addEventListener("change",()=>showStyle(select.value));
+ loadLivePrices();
  form.addEventListener("submit",async e=>{e.preventDefault();btn.disabled=true;msg.textContent="Submitting your appointment…";try{
  const {data:{session},error:sessionError}=await db.auth.getSession();if(sessionError||!session)throw new Error("Your login session has expired. Please sign in again.");
  const service=select.value;if(!styles[service])throw new Error("Please choose a haircut from the collection.");
