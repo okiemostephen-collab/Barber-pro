@@ -28,7 +28,7 @@
    const customerPromise=new Promise(resolve=>{resolveProfile=value=>{if(!settled){settled=true;resolve(value);}};});
    document.dispatchEvent(new CustomEvent("barberpro:ready",{detail:{user,customerPromise,profileCached:!!cached}}));
    try{
-    const result=await withTimeout(db.from("customers").select("id,full_name,phone").eq("auth_user_id",user.id).maybeSingle(),12000,"Loading your profile");
+    const result=await withTimeout(db.from("customers").select("id,full_name,phone").eq("auth_user_id",user.id).maybeSingle(),8000,"Loading your profile");
     if(result.error)throw result.error;
     if(!result.data)throw new Error("Your customer profile is not linked to this login. Please contact BarberPro support.");
     saveCache(PROFILE_KEY,user.id,result.data);
