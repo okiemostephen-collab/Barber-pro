@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Community & Reviews | BarberPro</title>
+<link rel="stylesheet" href="css/styles.css?v=20261120-community1">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/portal.js?v=20261120a" defer></script>
+<script src="js/community.js?v=20261120a" defer></script>
+<script src="js/navigation.js" defer></script>
+</head>
+<body>
+<header class="main-header"><a class="brand" href="dashboard.html"><span class="brand-mark">B</span><span>BARBERPRO</span></a>
+<nav><a href="dashboard.html">Dashboard</a><a href="gallery.html">Book a Cut</a><a href="appointments.html">My Appointments</a><a href="profile.html">My Profile</a></nav></header>
+<main class="page-container">
+<section class="page-heading"><p class="eyebrow">THE BARBERPRO COMMUNITY</p><h1>Connect. Share. Improve.</h1><p>A place for customers to share grooming tips, ask questions, discuss ideas and review their BarberPro experience.</p></section>
+<section class="community-intro panel"><h2>Welcome to the community</h2><p>Keep conversations respectful and useful. Do not post private contact details or sensitive personal information.</p><p id="communityMessage" role="status">Connecting to BarberPro…</p></section>
+<div class="community-layout">
+<section class="community-main">
+<div class="panel community-compose"><h2>Start a conversation</h2><form id="postForm" class="stack-form"><label for="postContent">What's on your mind?</label><textarea id="postContent" maxlength="1200" rows="4" required placeholder="Share a haircut tip, ask a question or suggest an improvement…"></textarea><button class="gold-button" type="submit">Publish post</button></form></div>
+<div class="section-heading"><p class="eyebrow">MEMBER DISCUSSIONS</p><h2>Community feed</h2></div>
+<div id="communityFeed" class="community-feed"><div class="panel">Loading posts…</div></div>
+</section>
+<aside class="community-side">
+<section class="panel"><h2>Review BarberPro</h2><p>Tell us what is working well and what we can improve.</p><form id="reviewForm" class="stack-form"><label for="reviewRating">Your rating</label><select id="reviewRating" required><option value="5">5 — Excellent</option><option value="4">4 — Very good</option><option value="3">3 — Good</option><option value="2">2 — Needs improvement</option><option value="1">1 — Poor</option></select><label for="reviewContent">Your review</label><textarea id="reviewContent" rows="4" minlength="5" maxlength="800" required placeholder="Share your experience…"></textarea><button class="gold-button" type="submit">Save my review</button><p id="reviewMessage" role="status"></p></form></section>
+<section class="panel"><h2>Member feedback</h2><p id="reviewSummary">Loading review summary…</p><div id="reviewList" class="community-reviews"><p>Loading reviews…</p></div></section>
+</aside>
+</div>
+</main>
+<footer class="site-footer">© 2026 BarberPro · Your Look. Your Time.</footer>
+</body></html>
