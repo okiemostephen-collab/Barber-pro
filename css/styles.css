@@ -1464,3 +1464,21 @@ tr:hover td{background:rgba(255,255,255,.025)}
 .appointments-hero{background-image:linear-gradient(90deg,rgba(5,10,12,.2),rgba(5,10,12,.1)),url("https://images.pexels.com/photos/7389079/pexels-photo-7389079.jpeg?auto=compress&cs=tinysrgb&w=1600")}
 @media(max-width:850px){.gallery-grid,.dashboard-grid,.product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.gallery-hero,.loyalty-hero,.product-hero,.booking-layout{grid-template-columns:1fr}.gallery-hero img,.loyalty-hero img,.product-hero img{height:300px}}
 @media(max-width:560px){.main-header{align-items:flex-start;flex-direction:column}.main-header nav,.main-nav{width:100%;overflow-x:auto;flex-wrap:nowrap}.main-header nav a,.main-nav a{white-space:nowrap}.page-container{width:min(94vw,1220px);padding-top:24px}.gallery-grid,.dashboard-grid,.product-grid,.profile-detail-grid{grid-template-columns:1fr}.gallery-photo{height:310px}.selected-style-panel{grid-template-columns:1fr}.selected-style-photo{height:260px}.loyalty-reward{align-items:flex-start;flex-direction:column}}
+
+/* Homepage hero: real Pexels barber portrait with a brighter readable overlay */
+body.welcome-page{background:#0b1012!important;color:#f4f1e9!important}
+.welcome-page .site-header{background:rgba(9,13,15,.92)!important;border-color:rgba(239,184,91,.28)!important}
+.welcome-page .welcome-hero{min-height:740px!important;padding:72px 5%!important;background-image:linear-gradient(90deg,rgba(5,9,11,.84),rgba(7,11,13,.52),rgba(7,11,13,.25)),url("https://images.pexels.com/photos/7389079/pexels-photo-7389079.jpeg?auto=compress&cs=tinysrgb&w=2000")!important;background-position:center 32%!important;background-size:cover!important}
+.welcome-page .welcome-content{width:min(1240px,100%)!important;grid-template-columns:1.15fr .85fr!important;gap:clamp(25px,5vw,70px)!important}
+.welcome-page .welcome-story h1{font-size:clamp(52px,7vw,94px)!important;color:#fff!important}
+.welcome-page .welcome-story h1 span{color:#f4c36f!important}
+.welcome-page .welcome-story p:not(.eyebrow){color:#f1eee8!important;font-size:17px!important}
+.welcome-page .auth-card{background:rgba(18,25,28,.94)!important;border:1px solid rgba(239,184,91,.28)!important;box-shadow:0 28px 80px rgba(0,0,0,.45)!important;color:#f7f3ea!important}
+.welcome-page .auth-card h2,.welcome-page .auth-card h3{color:#fff!important}
+.welcome-page .auth-card p,.welcome-page .auth-card label{color:#d0d8d3!important}
+.welcome-page .auth-card input{background:#0b1215!important;color:#fff!important;border:1px solid #455157!important}
+.welcome-page .about-section{background:#101719!important;color:#f4f1e9!important;padding:70px max(5vw,24px)!important}
+.welcome-page .about-section h2{color:#fff!important}
+.welcome-page .about-section p{color:#b9c3be!important}
+.welcome-page .site-footer{background:#080c0e!important}
+@media(max-width:800px){.welcome-page .welcome-content{grid-template-columns:1fr!important}.welcome-page .welcome-hero{padding:38px 5%!important;min-height:unset!important}.welcome-page .welcome-story h1{font-size:clamp(46px,13vw,72px)!important}}
