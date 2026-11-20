@@ -20,7 +20,7 @@
  const select=document.getElementById("serviceSelect"),date=document.getElementById("appointmentDate"),msg=document.getElementById("bookingMessage"),btn=document.getElementById("bookingButton");
  const image=document.getElementById("selectedStyleImage"),title=document.getElementById("selectedStyleName"),description=document.getElementById("selectedStyleDescription");
  const today=new Date();date.min=[today.getFullYear(),String(today.getMonth()+1).padStart(2,"0"),String(today.getDate()).padStart(2,"0")].join("-");
- function showStyle(name){const s=styles[name];if(!s)return;title.textContent=name;description.textContent=s.desc+"  Price: ₦"+s.price.toLocaleString("en-NG");image.style.setProperty("--col",s.col);image.style.setProperty("--row",s.row);image.setAttribute("aria-label",name+" on a Black male model");}
+ function showStyle(name){const s=styles[name];if(!s)return;title.textContent=name;description.textContent=s.desc+"  Price: ₦"+s.price.toLocaleString("en-NG");const xs=["0%","33.333%","66.667%","100%"],ys=["0%","50%","100%"];image.style.setProperty("--x",xs[s.col]);image.style.setProperty("--y",ys[s.row]);image.setAttribute("aria-label",name+" on a Black male model");}
  const requested=new URLSearchParams(location.search).get("service");if(requested&&styles[requested]){select.value=requested;showStyle(requested);}
  select.addEventListener("change",()=>showStyle(select.value));
  form.addEventListener("submit",async e=>{e.preventDefault();btn.disabled=true;msg.textContent="Submitting your appointment…";try{
@@ -30,7 +30,7 @@
  const time=document.getElementById("appointmentTime").value;if(!time)throw new Error("Choose an appointment time.");
  const response=await fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","apikey":"sb_publishable_0uV82cRokH-vR61SZWBE1g_ykq8iBCH","Authorization":"Bearer "+session.access_token},body:JSON.stringify({service_name:service,date:date.value,time})});
  const result=await response.json().catch(()=>({}));if(!response.ok||!result.success)throw new Error(result.error||result.message||"Booking could not be submitted.");
- msg.textContent=result.message||"Your appointment has been submitted successfully.";msg.dataset.success="true";form.reset();select.value="";title.textContent="Booking received";description.textContent="Your request is now in BarberPro. Check My Appointments for its status.";image.style.setProperty("--col",0);image.style.setProperty("--row",0);
+ msg.textContent=result.message||"Your appointment has been submitted successfully.";msg.dataset.success="true";form.reset();select.value="";title.textContent="Booking received";description.textContent="Your request is now in BarberPro. Check My Appointments for its status.";image.style.setProperty("--x","0%");image.style.setProperty("--y","0%");
  }catch(err){msg.textContent=err.message||"Unable to submit your appointment.";msg.dataset.success="false";}finally{btn.disabled=false;}
  });
 })();
