@@ -1360,3 +1360,8 @@ tr:hover td{background:rgba(255,255,255,.025)}
 /* Original BarberPro model portrait grid — 12 separate crops from one compact asset */
 .style-photo{width:100%;aspect-ratio:1/1;background-image:url("../assets/barberpro-model-grid.jpg");background-size:400% 300%;background-position:var(--x,0%) var(--y,0%);background-repeat:no-repeat;filter:brightness(.91) saturate(.86)}
 .selected-style-photo{width:100%;height:190px;border-radius:14px;background-image:url("../assets/barberpro-model-grid.jpg");background-size:400% 300%;background-position:calc(var(--col)*33.333333%) calc(var(--row)*50%);background-repeat:no-repeat;filter:brightness(.92) saturate(.86)}
+
+.dashboard-card-photo{height:145px;margin:-25px -25px 18px;border-radius:18px 18px 0 0;background-image:url("../assets/barberpro-model-grid.jpg");background-size:400% 300%;background-position:var(--x,0%) var(--y,0%);background-repeat:no-repeat;filter:brightness(.86) saturate(.86)}
+.profile-avatar{background-image:url("../assets/barberpro-model-grid.jpg");background-size:400% 300%;background-position:0% 0%;color:transparent;overflow:hidden}
+.admin-hero-photo{height:180px;border-radius:18px;background-image:linear-gradient(90deg,rgba(0,0,0,.35),rgba(0,0,0,.1)),url("../assets/barberpro-model-grid.jpg");background-size:cover;background-position:center 38%;border:1px solid #343d35;margin:0 0 24px}
+.appointments-hero{height:190px;border-radius:18px;background-image:linear-gradient(90deg,rgba(0,0,0,.2),rgba(0,0,0,.1)),url("../assets/barberpro-model-grid.jpg");background-size:cover;background-position:66.6% 50%;margin-bottom:25px;border:1px solid #343d35}
