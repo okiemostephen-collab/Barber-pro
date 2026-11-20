@@ -14,4 +14,8 @@ document.addEventListener("barberpro:ready",async event=>{
   }).join("")||"<tr><td colspan='7'>No appointments yet.</td></tr>";
  }catch(error){body.innerHTML="<tr><td colspan='7'>Appointments are temporarily unavailable. Please refresh in a moment.</td></tr>";}
 });
-function safe(v){return String(v??"").replace(/[&<>\\"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#39;"}[c]));}
+function safe(value){
+ const map={"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;"};
+ map[String.fromCharCode(34)]="&quot;";
+ return String(value??"").replace(/[&<>"']/g,char=>map[char]);
+}
