@@ -1500,3 +1500,91 @@ body.welcome-page{background:#0b1012!important;color:#f4f1e9!important}
 .photo-credit{margin:24px auto 10px;max-width:1100px;color:#9aa39d;font-size:12px;line-height:1.8}
 .photo-credit a{color:#d4b77a;text-decoration:underline}
 .gallery-photo{background:#101719}
+
+
+/* =========================================================
+   BARBERPRO RESPONSIVE LAYOUT — PHONE, TABLET & DESKTOP
+   Final override layer: keeps every page readable at narrow widths.
+   ========================================================= */
+html{width:100%;overflow-x:hidden}
+body{width:100%;min-width:0;overflow-x:hidden}
+main,.page-container,.section-wrap{min-width:0}
+.main-header,.site-header,.topbar{
+  width:100%;max-width:100%;min-width:0;gap:16px;
+}
+.main-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:14px clamp(14px,3vw,36px)}
+.main-header nav{display:flex;align-items:center;justify-content:flex-end;gap:clamp(8px,1.4vw,18px);flex-wrap:wrap;min-width:0}
+.main-header nav a{display:inline-flex;align-items:center;min-height:40px;padding:7px 10px;white-space:nowrap}
+.page-container{width:min(1220px,92vw);margin-inline:auto}
+.gallery-grid,.dashboard-grid,.product-grid,.stats-grid,.profile-detail-grid,.dashboard-columns{min-width:0}
+.gallery-card,.dashboard-card,.product-card,.panel,.auth-card,.stat-card{min-width:0}
+.gallery-photo,.product-photo,.selected-style-photo,.gallery-hero img,.product-hero img,.loyalty-hero img{
+  display:block;max-width:100%;width:100%;object-fit:cover;
+}
+.product-photo{height:clamp(180px,22vw,250px);object-position:center}
+.dashboard-card-photo{background-size:cover;background-repeat:no-repeat}
+.table-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin}
+.table-scroll table{min-width:680px}
+input,select,textarea,button{max-width:100%}
+img{height:auto}
+.gallery-photo,.product-photo{height:clamp(205px,24vw,310px)}
+.page-heading h1{font-size:clamp(2rem,5vw,4rem);overflow-wrap:anywhere}
+.panel,.auth-card,.booking-form-section,.booking-info{padding:clamp(16px,3vw,30px)}
+.booking-layout,.selected-style-panel,.gallery-hero,.product-hero,.loyalty-hero{min-width:0}
+@media(max-width:900px){
+  .main-header{align-items:flex-start}
+  .main-header nav{justify-content:flex-start}
+  .gallery-grid,.dashboard-grid,.product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dashboard-columns{grid-template-columns:1fr}
+  .gallery-hero,.product-hero,.loyalty-hero,.booking-layout{grid-template-columns:minmax(0,1fr)}
+  .gallery-hero img,.product-hero img,.loyalty-hero img{height:clamp(230px,42vw,340px)}
+  .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+  html{scroll-padding-top:16px}
+  .main-header,.site-header,.topbar{padding:12px 4vw;gap:10px}
+  .main-header{display:flex;flex-direction:column;align-items:stretch}
+  .main-header .brand{align-self:flex-start}
+  .main-header nav,.main-nav{
+    display:flex;flex-wrap:nowrap;justify-content:flex-start;align-items:center;
+    width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden;
+    gap:7px;padding:4px 0 9px;white-space:nowrap;
+    -webkit-overflow-scrolling:touch;scrollbar-width:thin;
+  }
+  .main-header nav a,.main-nav a{flex:0 0 auto;white-space:nowrap;padding:8px 11px;font-size:13px}
+  .page-container{width:92vw;padding:22px 0 48px}
+  .page-heading{padding:14px 0 22px}
+  .page-heading h1{font-size:clamp(2rem,10vw,3rem);line-height:1.08}
+  .gallery-grid,.dashboard-grid,.product-grid,.profile-detail-grid,.stats-grid{grid-template-columns:minmax(0,1fr);gap:15px}
+  .gallery-photo{height:clamp(230px,72vw,340px)}
+  .product-photo{height:clamp(210px,66vw,300px)}
+  .dashboard-card-photo{height:clamp(170px,52vw,230px)}
+  .gallery-card-content,.product-card-content{padding:17px}
+  .gallery-hero,.product-hero,.loyalty-hero{padding:18px;border-radius:20px;gap:18px}
+  .gallery-hero img,.product-hero img,.loyalty-hero img{height:240px;border-radius:14px}
+  .selected-style-panel{grid-template-columns:minmax(0,1fr);padding:15px;gap:15px}
+  .selected-style-photo{height:clamp(210px,65vw,280px)}
+  .booking-layout{grid-template-columns:minmax(0,1fr);gap:15px}
+  .form-grid{grid-template-columns:minmax(0,1fr);gap:14px}
+  .full{grid-column:auto}
+  .panel,.auth-card,.booking-form-section,.booking-info{padding:17px;border-radius:17px}
+  .dashboard-welcome{padding:22px 18px}
+  .loyalty-stamps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .loyalty-reward{flex-direction:column;align-items:flex-start}
+  .admin-service-row,.expense-row,.customer-item{align-items:flex-start;flex-wrap:wrap}
+  .admin-service-row input{width:min(100%,180px)}
+  .panel-heading{align-items:flex-start;flex-direction:column}
+  .table-scroll{margin-inline:-4px}
+  .back-control{left:12px;bottom:12px}
+  .site-footer,.main-footer{padding:22px 5%;line-height:1.6}
+  .gold-button,.primary-button,.primary-link,.choose-btn{width:100%;justify-content:center}
+}
+@media(min-width:601px) and (max-width:900px){
+  .page-container{width:94vw}
+  .gallery-grid,.dashboard-grid,.product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .product-photo,.gallery-photo{height:250px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
