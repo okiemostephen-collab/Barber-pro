@@ -1,76 +1,23 @@
-/* BarberPro Community: posts, comments and member reviews */
+/* BarberPro Community — reliable submit handlers and confirmed database writes */
 (()=>{
- const $=id=>document.getElementById(id);
- const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
- let db,user,memberName="BarberPro member",ready=false;
+ const $=id=>document.getElementById(id),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+ let db,user,name="BarberPro member",ready=false,loading=false;
  const note=(id,msg)=>{const el=$(id);if(el)el.textContent=msg;};
- const date=s=>{const d=new Date(s);return Number.isNaN(d.getTime())?"":d.toLocaleString();};
- const load=async()=>{
-  if(!db||!user)return;
-  note("communityMessage","Loading the community…");
-  const [postsRes,commentsRes,reviewsRes,myReviewRes]=await Promise.all([
-   db.from("community_posts").select("id,author_user_id,author_name,content,created_at").order("created_at",{ascending:false}).limit(40),
-   db.from("community_comments").select("id,post_id,author_user_id,author_name,content,created_at").order("created_at",{ascending:true}).limit(300),
-   db.from("community_reviews").select("id,author_name,rating,content,created_at").order("created_at",{ascending:false}).limit(50),
-   db.from("community_reviews").select("rating,content").eq("author_user_id",user.id).maybeSingle()
-  ]);
-  const firstError=postsRes.error||commentsRes.error||reviewsRes.error;
-  if(firstError)throw firstError;
-  const posts=postsRes.data||[],comments=commentsRes.data||[],reviews=reviewsRes.data||[];
-  const feed=$("communityFeed");
-  if(feed)feed.innerHTML=posts.length?posts.map(p=>{
-   const mine=p.author_user_id===user.id;
-   const replies=comments.filter(c=>c.post_id===p.id);
-   return `<article class="community-post" data-post-id="${esc(p.id)}">
-    <div class="community-post-head"><div><strong>${esc(p.author_name)}</strong><small>${esc(date(p.created_at))}</small></div>${mine?'<button class="community-delete" data-delete-post="'+esc(p.id)+'" type="button">Delete</button>':""}</div>
-    <p class="community-post-content">${esc(p.content)}</p>
-    <div class="community-comments"><h4>Comments (${replies.length})</h4>
-    ${replies.map(c=>`<div class="community-comment"><strong>${esc(c.author_name)}</strong><p>${esc(c.content)}</p><small>${esc(date(c.created_at))}</small></div>`).join("")}
-    </div>
-    <form class="community-comment-form" data-comment-form="${esc(p.id)}"><input name="comment" maxlength="500" required placeholder="Write a helpful comment…" aria-label="Write a comment"><button class="gold-button" type="submit">Comment</button></form>
-   </article>`;
-  }).join(""):"<div class='panel'><p>No posts yet. Start the conversation with a helpful tip or idea.</p></div>";
-  const avg=reviews.length?reviews.reduce((n,r)=>n+Number(r.rating),0)/reviews.length:0;
-  note("reviewSummary",reviews.length?`Average rating: ${avg.toFixed(1)} / 5 · ${reviews.length} review(s)`:"No reviews yet. Be the first to review BarberPro.");
-  const reviewList=$("reviewList");
-  if(reviewList)reviewList.innerHTML=reviews.length?reviews.map(r=>`<article class="community-review"><div><strong>${esc(r.author_name)}</strong><span class="review-stars">${"★".repeat(Number(r.rating))}${"☆".repeat(5-Number(r.rating))}</span></div><p>${esc(r.content)}</p><small>${esc(date(r.created_at))}</small></article>`).join(""):"<p>No member reviews yet.</p>";
-  if(myReviewRes.data){$("reviewRating").value=String(myReviewRes.data.rating);$("reviewContent").value=myReviewRes.data.content;}
-  note("communityMessage","You're signed in as a BarberPro member.");
- };
- const busy=(form,on)=>{const b=form.querySelector("button[type=submit]");if(b){b.disabled=on;b.dataset.label??=b.textContent;if(on)b.textContent="Please wait…";else b.textContent=b.dataset.label;}};
- document.addEventListener("barberpro:ready",async event=>{
-  try{
-   user=event.detail.user;db=window.barberProSupabase;
-   memberName=user.user_metadata?.full_name||user.email?.split("@")[0]||"BarberPro member";
-   ready=true;await load();
-   event.detail.customerPromise.then(profile=>{if(profile&&!profile.__error){memberName=profile.full_name||memberName;}}).catch(()=>{});
-  }catch(error){note("communityMessage",error?.message||"Could not connect to the community. Refresh and sign in again.");}
- });
- $("postForm")?.addEventListener("submit",async e=>{
-  e.preventDefault();if(!ready)return;const form=e.currentTarget,content=$("postContent").value.trim();if(!content)return;
-  busy(form,true);
-  try{const {error}=await db.from("community_posts").insert({author_user_id:user.id,author_name:memberName,content});if(error)throw error;$("postContent").value="";await load();}
-  catch(error){note("communityMessage",error.message||"Your post could not be published.");}
-  finally{busy(form,false);}
- });
- $("reviewForm")?.addEventListener("submit",async e=>{
-  e.preventDefault();if(!ready)return;const form=e.currentTarget,rating=Number($("reviewRating").value),content=$("reviewContent").value.trim();busy(form,true);
-  try{const {error}=await db.from("community_reviews").upsert({author_user_id:user.id,author_name:memberName,rating,content},{onConflict:"author_user_id"});if(error)throw error;note("reviewMessage","Your review has been saved. Thank you.");await load();}
-  catch(error){note("reviewMessage",error.message||"Your review could not be saved.");}
-  finally{busy(form,false);}
- });
- $("communityFeed")?.addEventListener("submit",async e=>{
-  const form=e.target.closest("[data-comment-form]");if(!form)return;e.preventDefault();if(!ready)return;
-  const content=new FormData(form).get("comment")?.toString().trim();if(!content)return;busy(form,true);
-  try{const {error}=await db.from("community_comments").insert({post_id:form.dataset.commentForm,author_user_id:user.id,author_name:memberName,content});if(error)throw error;await load();}
-  catch(error){note("communityMessage",error.message||"Your comment could not be saved.");}
-  finally{busy(form,false);}
- });
- $("communityFeed")?.addEventListener("click",async e=>{
-  const b=e.target.closest("[data-delete-post]");if(!b||!ready)return;
-  if(!confirm("Delete your post and its comments?"))return;
-  b.disabled=true;
-  try{const {error}=await db.from("community_posts").delete().eq("id",b.dataset.deletePost).eq("author_user_id",user.id);if(error)throw error;await load();}
-  catch(error){note("communityMessage",error.message||"The post could not be deleted.");b.disabled=false;}
- });
+ const when=s=>{const d=new Date(s);return Number.isNaN(d.getTime())?"":d.toLocaleString();};
+ const author=s=>String(s||"BarberPro member").trim().slice(0,60)||"BarberPro member";
+ const busy=(form,on,label)=>{const b=form.querySelector("button[type=submit]");if(!b)return;b.disabled=on;if(on){b.dataset.label??=b.textContent;b.textContent=label||"Saving…";}else b.textContent=b.dataset.label||b.textContent;};
+ async function load(){if(!db||!user||loading)return;loading=true;note("communityMessage","Loading community…");try{
+  const [p,c,r,m]=await Promise.all([db.from("community_posts").select("id,author_user_id,author_name,content,created_at").order("created_at",{ascending:false}).limit(50),db.from("community_comments").select("id,post_id,author_user_id,author_name,content,created_at").order("created_at",{ascending:true}).limit(500),db.from("community_reviews").select("id,author_user_id,author_name,rating,content,created_at").order("created_at",{ascending:false}).limit(100),db.from("community_reviews").select("rating,content").eq("author_user_id",user.id).maybeSingle()]);
+  const err=p.error||c.error||r.error||m.error;if(err)throw err;const posts=p.data||[],comments=c.data||[],reviews=r.data||[];
+  const feed=$("communityFeed");if(feed)feed.innerHTML=posts.length?posts.map(post=>{const replies=comments.filter(x=>x.post_id===post.id),mine=post.author_user_id===user.id;return `<article class="community-post" data-post-id="${esc(post.id)}"><div class="community-post-head"><div><strong>${esc(post.author_name)}</strong><small>${esc(when(post.created_at))}</small></div>${mine?'<button class="community-delete" data-delete-post="'+esc(post.id)+'" type="button">Delete</button>':""}</div><p class="community-post-content">${esc(post.content)}</p><div class="community-comments"><h4>Comments (${replies.length})</h4>${replies.map(x=>`<div class="community-comment"><strong>${esc(x.author_name)}</strong><p>${esc(x.content)}</p><small>${esc(when(x.created_at))}</small></div>`).join("")}</div><form class="community-comment-form" data-comment-form="${esc(post.id)}"><input name="comment" maxlength="500" required placeholder="Write a helpful comment…" aria-label="Write a comment"><button class="gold-button" type="submit">Comment</button></form></article>`;}).join(""):"<div class='panel'><p>No posts yet. Be the first to start a conversation.</p></div>";
+  const avg=reviews.length?reviews.reduce((n,x)=>n+Number(x.rating),0)/reviews.length:0;note("reviewSummary",reviews.length?`Average rating: ${avg.toFixed(1)} / 5 · ${reviews.length} review(s)`:"No reviews yet. Be the first to review BarberPro.");
+  const list=$("reviewList");if(list)list.innerHTML=reviews.length?reviews.map(x=>`<article class="community-review"><div><strong>${esc(x.author_name)}</strong><span class="review-stars">${"★".repeat(Number(x.rating))}${"☆".repeat(5-Number(x.rating))}</span></div><p>${esc(x.content)}</p><small>${esc(when(x.created_at))}</small></article>`).join(""):"<p>No member reviews yet.</p>";
+  if(m.data){$("reviewRating").value=String(m.data.rating);$("reviewContent").value=m.data.content;}note("communityMessage","Connected. Posts, comments and reviews are stored in BarberPro.");
+ }catch(err){console.error("Community load failed:",err);note("communityMessage","Community could not load: "+(err.message||"Please refresh."));}finally{loading=false;}}
+ async function verify(){if(!ready)throw new Error("Your account is still connecting. Wait a moment and try again.");const {data,error}=await db.auth.getSession();if(error)throw error;if(!data.session||data.session.user.id!==user.id)throw new Error("Your session expired. Sign in again.");}
+ (window.barberProReady||Promise.resolve({error:new Error("Account connection unavailable.")})).then(async state=>{if(state?.error){note("communityMessage","Please sign in to use the community.");return;}db=state.db;user=state.user;const profile=await state.customerPromise;name=author(profile&&!profile.__error?profile.full_name:user.user_metadata?.full_name||user.email?.split("@")[0]);ready=true;await load();}).catch(err=>note("communityMessage",err.message||"Community connection failed."));
+ const post=$("postForm");post?.addEventListener("submit",async e=>{e.preventDefault();const content=$("postContent")?.value.trim();if(!content)return;busy(post,true,"Publishing…");note("communityMessage","Publishing your post…");try{await verify();const {data,error}=await db.from("community_posts").insert({author_user_id:user.id,author_name:name,content}).select("id").single();if(error)throw error;if(!data?.id)throw new Error("The database did not confirm the post.");$("postContent").value="";note("communityMessage","Your post has been published and saved.");await load();}catch(err){console.error("Post failed:",err);note("communityMessage","Post not published: "+(err.message||"Please try again."));}finally{busy(post,false);}});
+ const review=$("reviewForm");review?.addEventListener("submit",async e=>{e.preventDefault();const rating=Number($("reviewRating")?.value),content=$("reviewContent")?.value.trim();if(!content||content.length<5){note("reviewMessage","Please write at least 5 characters.");return;}busy(review,true,"Saving review…");note("reviewMessage","Saving your review…");try{await verify();const {data,error}=await db.from("community_reviews").upsert({author_user_id:user.id,author_name:name,rating,content},{onConflict:"author_user_id"}).select("id").single();if(error)throw error;if(!data?.id)throw new Error("The database did not confirm the review.");note("reviewMessage","Your review has been saved and published.");await load();}catch(err){console.error("Review failed:",err);note("reviewMessage","Review not saved: "+(err.message||"Please try again."));}finally{busy(review,false);}});
+ $("communityFeed")?.addEventListener("submit",async e=>{const form=e.target.closest("[data-comment-form]");if(!form)return;e.preventDefault();const content=form.elements.comment?.value.trim();if(!content)return;busy(form,true,"Posting…");try{await verify();const {data,error}=await db.from("community_comments").insert({post_id:form.dataset.commentForm,author_user_id:user.id,author_name:name,content}).select("id").single();if(error)throw error;if(!data?.id)throw new Error("The database did not confirm the comment.");note("communityMessage","Your comment has been published.");await load();}catch(err){console.error("Comment failed:",err);note("communityMessage","Comment not published: "+(err.message||"Please try again."));}finally{busy(form,false);}});
+ $("communityFeed")?.addEventListener("click",async e=>{const b=e.target.closest("[data-delete-post]");if(!b)return;if(!confirm("Delete your post and its comments?"))return;b.disabled=true;try{await verify();const {error}=await db.from("community_posts").delete().eq("id",b.dataset.deletePost).eq("author_user_id",user.id);if(error)throw error;note("communityMessage","Your post has been deleted.");await load();}catch(err){note("communityMessage","Could not delete post: "+err.message);b.disabled=false;}});
 })();
