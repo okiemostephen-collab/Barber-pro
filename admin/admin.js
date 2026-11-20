@@ -16,7 +16,7 @@
    db.from("appointments").select("id,customer_id,service_name,appointment_date,appointment_time,price,discount_percent,discount_amount,final_price,status,customers(full_name,phone)").order("appointment_date",{ascending:false}).order("appointment_time",{ascending:false}),
    db.from("expenses").select("id,description,amount,expense_date").order("expense_date",{ascending:false}),
    db.from("customers").select("id,full_name,phone,created_at").order("created_at",{ascending:false}),
-   db.from("services").select("id,name,description,price").order("name")
+   db.from("services").select("id,name,description,price,updated_at").order("name").order("updated_at")
   ]);
   const errors=[];
   if(a.error){errors.push("Appointments: "+a.error.message);$("rows").innerHTML='<tr><td colspan="10">Could not load appointments: '+safe(a.error.message)+'</td></tr>';}
