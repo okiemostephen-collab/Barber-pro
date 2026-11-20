@@ -1588,3 +1588,18 @@ img{height:auto}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+
+/* Customer-facing booking confirmation indicators */
+.appointment-status{display:inline-flex;align-items:center;padding:7px 12px;border-radius:999px;font-size:12px;font-weight:800;line-height:1.35;white-space:normal}
+.status-pending{background:rgba(239,184,91,.16);color:#f4c875;border:1px solid rgba(239,184,91,.4)}
+.status-confirmed{background:rgba(82,201,154,.15);color:#70ddb0;border:1px solid rgba(82,201,154,.42)}
+.status-completed{background:rgba(120,170,220,.15);color:#9bc9f1;border:1px solid rgba(120,170,220,.4)}
+.status-cancelled{background:rgba(255,119,119,.14);color:#ff9999;border:1px solid rgba(255,119,119,.4)}
+.customer-booking-status{margin:10px 0 28px;padding:clamp(20px,3vw,30px)}
+.customer-booking-status h2{margin:0 0 10px}
+.customer-booking-status p{color:#c2cbc6}
+.booking-status-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.booking-status-heading .eyebrow{margin:0 0 8px}
+.booking-status-note{margin:14px 0}
+@media(max-width:600px){.booking-status-heading{align-items:flex-start;flex-direction:column}}
