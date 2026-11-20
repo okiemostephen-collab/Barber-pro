@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The BarberPro Grooming Guide — hairstyles, hair maintenance and grooming discoveries for men.">
+  <title>The Grooming Guide | BarberPro</title>
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <style>
+    :root {
+      --guide-gold: #c99d54;
+      --guide-cream: #eee9df;
+      --guide-muted: #aaa39a;
+      --guide-black: #080808;
+      --guide-panel: #151515;
+    }
+
+    body.guide-page {
+      background: var(--guide-black);
+      color: var(--guide-cream);
+    }
+
+    .guide-nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .guide-hero {
+      min-height: 590px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 85px 8%;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.94), rgba(0,0,0,.60), rgba(0,0,0,.25)),
+        url("https://images.pexels.com/photos/7388935/pexels-photo-7388935.jpeg?auto=compress&cs=tinysrgb&w=1800")
+        center 40% / cover no-repeat;
+    }
+
+    .guide-hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+    }
+
+    .guide-kicker {
+      color: var(--guide-gold);
+      letter-spacing: 4px;
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 22px;
+    }
+
+    .guide-hero h1 {
+      font-size: clamp(48px, 8vw, 100px);
+      line-height: .98;
+      letter-spacing: -4px;
+      margin-bottom: 25px;
+    }
+
+    .guide-hero h1 span {
+      color: var(--guide-gold);
+    }
+
+    .guide-hero p {
+      max-width: 570px;
+      color: #d0cbc2;
+      font-size: 16px;
+      line-height: 1.9;
+      margin-bottom: 30px;
+    }
+
+    .guide-button {
+      display: inline-block;
+      padding: 14px 23px;
+      background: var(--guide-gold);
+      color: #101010;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+    }
+
+    .guide-button:hover {
+      background: #e5c27f;
+    }
+
+    .guide-section {
+      width: 88%;
+      max-width: 1250px;
+      margin: auto;
+      padding: 85px 0;
+    }
+
+    .guide-section-header {
+      max-width: 700px;
+      margin-bottom: 35px;
+    }
+
+    .guide-section-header small {
+      color: var(--guide-gold);
+      letter-spacing: 3px;
+      font-weight: 800;
+      font-size: 10px;
+    }
+
+    .guide-section-header h2 {
+      font-size: clamp(30px, 5vw, 53px);
+      line-height: 1.1;
+      margin: 12px 0;
+    }
+
+    .guide-section-header p {
+      color: var(--guide-muted);
+      line-height: 1.8;
+    }
+
+    .guide-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 35px;
+      align-items: center;
+    }
+
+    .guide-intro img {
+      width: 100%;
+      height: 410px;
+      object-fit: cover;
+      border-radius: 7px;
+    }
+
+    .guide-intro-copy h2 {
+      font-size: clamp(30px, 4vw, 45px);
+      line-height: 1.15;
+      margin-bottom: 18px;
+    }
+
+    .guide-intro-copy p {
+      color: var(--guide-muted);
+      line-height: 1.9;
+      margin-bottom: 15px;
+    }
+
+    .guide-stat {
+      color: var(--guide-gold);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin-top: 22px;
+    }
+
+    .style-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .style-card {
+      background: var(--guide-panel);
+      border: 1px solid #29251f;
+      border-radius: 7px;
+      overflow: hidden;
+      transition: transform .25s ease, border-color .25s ease;
+    }
+
+    .style-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--guide-gold);
+    }
+
+    .style-card img {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+    }
+
+    .style-card-body {
+      padding: 20px;
+    }
+
+    .style-card-body small {
+      color: var(--guide-gold);
+      letter-spacing: 2px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .style-card h3 {
+      font-size: 21px;
+      margin: 7px 0;
+    }
+
+    .style-card p {
+      color: var(--guide-muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .style-card details {
+      border-top: 1px solid #302a21;
+      margin-top: 16px;
+      padding-top: 13px;
+    }
+
+    .style-card summary {
+      color: var(--guide-gold);
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .style-card summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .style-card details p {
+      margin-top: 13px;
+    }
+
+    .tip-highlight {
+      background: linear-gradient(120deg, #201a10, #121212);
+      border: 1px solid #4a3820;
+      padding: 35px;
+      border-radius: 8px;
+      margin-top: 35px;
+    }
+
+    .tip-highlight h3 {
+      color: var(--guide-gold);
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .tip-highlight p {
+      color: #c5bfb5;
+      line-height: 1.8;
+    }
+
+    .routine-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .routine-card {
+      padding: 25px;
+      background: var(--guide-panel);
+      border: 1px solid #2b2925;
+      border-radius: 7px;
+    }
+
+    .routine-card .routine-number {
+      color: var(--guide-gold);
+      font-size: 34px;
+      font-weight: 900;
+    }
+
+    .routine-card h3 {
+      margin: 8px 0;
+      font-size: 20px;
+    }
+
+    .routine-card p {
+      color: var(--guide-muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .routine-image {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+      border-radius: 7px;
+      margin-top: 28px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .product-card {
+      background: #171717;
+      border: 1px solid #302a21;
+      padding: 22px;
+      border-radius: 7px;
+    }
+
+    .product-icon {
+      color: var(--guide-gold);
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .product-card h3 {
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+
+    .product-card p {
+      color: var(--guide-muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .abuja-section {
+      background: #111;
+      border-top: 1px solid #29231b;
+      border-bottom: 1px solid #29231b;
+    }
+
+    .abuja-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .abuja-card {
+      background: #191919;
+      border: 1px solid #34302a;
+      border-radius: 7px;
+      padding: 23px;
+    }
+
+    .abuja-card small {
+      color: var(--guide-gold);
+      letter-spacing: 2px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .abuja-card h3 {
+      margin: 8px 0;
+      font-size: 20px;
+    }
+
+    .abuja-card p {
+      color: var(--guide-muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .directory-link {
+      display: inline-block;
+      color: var(--guide-gold);
+      font-size: 12px;
+      font-weight: 800;
+      margin-top: 13px;
+    }
+
+    .directory-note {
+      color: var(--guide-muted);
+      font-size: 12px;
+      margin-top: 20px;
+      line-height: 1.8;
+    }
+
+    .guide-bottom {
+      text-align: center;
+      padding: 85px 7%;
+      background:
+        linear-gradient(rgba(0,0,0,.86), rgba(0,0,0,.92)),
+        url("https://images.pexels.com/photos/4524960/pexels-photo-4524960.jpeg?auto=compress&cs=tinysrgb&w=1600")
+        center / cover;
+    }
+
+    .guide-bottom h2 {
+      font-size: clamp(30px, 5vw, 52px);
+      margin-bottom: 13px;
+    }
+
+    .guide-bottom p {
+      color: var(--guide-muted);
+      margin: 0 auto 25px;
+      max-width: 600px;
+      line-height: 1.8;
+    }
+
+    .photo-credit {
+      width: 88%;
+      max-width: 1250px;
+      margin: 0 auto;
+      padding: 18px 0;
+      color: #777;
+      font-size: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .style-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .guide-intro {
+        grid-template-columns: 1fr;
+      }
+
+      .routine-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .guide-hero {
+        min-height: 520px;
+        padding: 65px 7%;
+        background-position: 58% center;
+      }
+
+      .guide-hero h1 {
+        letter-spacing: -2px;
+      }
+
+      .guide-section {
+        width: 90%;
+        padding: 60px 0;
+      }
+
+      .style-grid,
+      .product-grid,
+      .abuja-list {
+        grid-template-columns: 1fr;
+      }
+
+      .style-card img {
+        height: 250px;
+      }
+
+      .guide-intro img {
+        height: 300px;
+      }
+
+      .tip-highlight {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body class="guide-page">
+
+  <!-- HEADER -->
+  <header class="site-header guide-nav">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">B</span>
+      <span>BARBER<span class="brand-accent">PRO</span></span>
+    </a>
+
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="booking.html">Book a cut</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="guide-hero">
+    <div class="guide-hero-content">
+      <div class="guide-kicker">BARBERPRO PRESENTS / THE GROOMING EDIT</div>
+
+      <h1>
+        THE ART OF<br>
+        <span>LOOKING SHARP.</span>
+      </h1>
+
+      <p>
+        Your haircut is only the beginning. Discover how to
+        maintain your style, understand your hair, avoid common
+        grooming mistakes and make every visit to the barber count.
+      </p>
+
+      <a href="#style-library" class="guide-button">
+        EXPLORE THE STYLE LIBRARY
+      </a>
+    </div>
+  </section>
+
+  <!-- INTRODUCTION -->
+  <section class="guide-section">
+    <div class="guide-intro">
+
+      <img
+        src="https://images.pexels.com/photos/7389079/pexels-photo-7389079.jpeg?auto=compress&cs=tinysrgb&w=1200"
+        alt="Black male model in a professional barbershop"
+        loading="lazy"
+      >
+
+      <div class="guide-intro-copy">
+        <div class="guide-kicker">01 / KNOW YOUR HAIR</div>
+
+        <h2>A great cut deserves great maintenance.</h2>
+
+        <p>
+          Curly and coily hair can lose moisture quickly.
+          Understanding your hair texture helps you choose
+          suitable products and build a routine that works.
+        </p>
+
+        <p>
+          The goal isn't to use every product on the shelf.
+          It's to understand what your hair needs and keep
+          your routine consistent.
+        </p>
+
+        <div class="guide-stat">
+          LESS GUESSWORK. MORE CONFIDENCE.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- STYLE LIBRARY -->
+  <section class="guide-section" id="style-library">
+
+    <div class="guide-section-header">
+      <small>02 / THE STYLE LIBRARY</small>
+      <h2>Find your signature look.</h2>
+      <p>
+        Select a hairstyle to reveal what maintaining it involves,
+        what to tell your barber and what mistakes to avoid.
+      </p>
+    </div>
+
+    <div class="style-grid">
+
+      <article class="style-card">
+        <img
+          src="https://images.pexels.com/photos/7388935/pexels-photo-7388935.jpeg?auto=compress&cs=tinysrgb&w=900"
+          alt="Black male client receiving a professional haircut"
+          loading="lazy"
+        >
+        <div class="style-card-body">
+          <small>01 / CLEAN & CLASSIC</small>
+          <h3>Low Fade</h3>
+          <p>A subtle fade that keeps the sides neat while leaving room for different top styles.</p>
+          <details>
+            <summary>DISCOVER MAINTENANCE +</summary>
+            <p>Keep the sides tidy with regular barber visits. Moisturise the top according to your hair's needs. Tell your barber how low you want the fade to begin.</p>
+            <p><strong>Common mistake:</strong> Requesting a fade without agreeing on where it should start.</p>
+          </details>
+        </div>
+      </article>
+
+      <article class="style-card">
+        <img
+          src="https://images.pexels.com/photos/4524960/pexels-photo-4524960.jpeg?auto=compress&cs=tinysrgb&w=900"
+          alt="Black man with a textured natural hairstyle"
+          loading="lazy"
+        >
+        <div class="style-card-body">
+          <small>02 / TEXTURE & DETAIL</small>
+          <h3>Afro Shape-up</h3>
+          <p>A natural look that celebrates volume, texture and a carefully shaped outline.</p>
+          <details>
+            <summary>DISCOVER MAINTENANCE +</summary>
+            <p>Use a suitable moisturising product and gently detangle when needed. Ask your barber to shape the outline without removing more length than you want.</p>
+            <p><strong>Common mistake:</strong> Brushing aggressively when the hair is dry and tangled.</p>
+          </details>
+        </div>
+      </article>
+
+      <article class="style-card">
+        <img
+          src="https://images.pexels.com/photos/10306013/pexels-photo-10306013.jpeg?auto=compress&cs=tinysrgb&w=900"
+          alt="Portrait of a Black man with an afro hairstyle"
+          loading="lazy"
+        >
+        <div class="style-card-body">
+          <small>03 / NATURAL EXPRESSION</small>
+          <h3>Natural Afro</h3>
+          <p>Full natural hair with plenty of room to express your personal style.</p>
+          <details>
+            <summary>DISCOVER MAINTENANCE +</summary>
+            <p>Use a gentle cleansing routine, conditioner and a suitable moisturiser. Detangle gently, preferably when the hair is conditioned.</p>
+            <p><strong>Common mistake:</strong> Assuming more product always means healthier hair.</p>
+          </details>
+        </div>
+      </article>
+
+      <article class="style-card">
+        <img
+          src="https://images.pexels.com/photos/31712631/pexels-photo-31712631.jpeg?auto=compress&cs=tinysrgb&w=900"
+          alt="Studio portrait of a Black man with afro hair"
+          loading="lazy"
+        >
+        <div class="style-card-body">
+          <small>04 / BOLD & DEFINED</small>
+          <h3>Textured Crop</h3>
+          <p>A short textured top with a clean outline and a modern finish.</p>
+          <details>
+            <summary>DISCOVER MAINTENANCE +</summary>
+            <p>Ask your barber to preserve the texture on top. Use a small amount of styling product if needed, and avoid heavy buildup.</p>
+            <p><strong>Common mistake:</strong> Using too much product and flattening the texture.</p>
+          </details>
+        </div>
+      </article>
+
+      <article class="style-card">
+        <img
+          src="https://images.pexels.com/photos/7389079/pexels-photo-7389079.jpeg?auto=compress&cs=tinysrgb&w=900"
+          alt="Black male model with a neat curly hairstyle"
+          loading="lazy"
+        >
+        <div class="style-card-body">
+          <small>05 / SHARP & REFINED</small>
+          <h3>Waves & Line-up</h3>
+          <p>A defined wave pattern with a neat hairline and a clean finish.</p>
+          <details>
+            <summary>DISCOVER MAINTENANCE +</summary>
+            <p>Brush consistently in the direction your waves naturally form. Keep the scalp clean and use a suitable lightweight moisturiser.</p>
+            <p><strong>Common mistake:</strong> Brushing too aggressively or wearing a tight covering that irritates the scalp.</p>
+          </details>
+        </div>
+      </article>
+
+      <article class="style-card">
+        <img
+          src="https://images.pexels.com/photos/4524960/pexels-photo-4524960.jpeg?auto=compress&cs=tinysrgb&w=900"
+          alt="Black male model with a modern hairstyle"
+          loading="lazy"
+        >
+        <div class="style-card-body">
+          <small>06 / PERSONAL STYLE</small>
+          <h3>Locs & Twists</h3>
+          <p>A versatile style that requires a thoughtful washing and maintenance routine.</p>
+          <details>
+            <summary>DISCOVER MAINTENANCE +</summary>
+            <p>Keep the scalp clean, dry the hair properly after washing and avoid excessive tension during retwisting.</p>
+            <p><strong>Common mistake:</strong> Retwisting too tightly or too frequently.</p>
+          </details>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="tip-highlight">
+      <h3>BARBERPRO INSIDER TIP</h3>
+      <p>
+        Before your next haircut, save a reference photo of the
+        exact style you want. Tell your barber what you like about
+        it: the fade height, top length, hairline or shape.
+        A picture plus a clear explanation can prevent
+        misunderstandings.
+      </p>
+    </div>
+
+  </section>
+
+  <!-- ROUTINE -->
+  <section class="guide-section">
+
+    <div class="guide-section-header">
+      <small>03 / YOUR GROOMING ROUTINE</small>
+      <h2>Small habits. Better hair days.</h2>
+      <p>
+        A simple routine is often more useful than a shelf full
+        of products.
+      </p>
+    </div>
+
+    <div class="routine-grid">
+
+      <article class="routine-card">
+        <div class="routine-number">01</div>
+        <h3>Cleanse thoughtfully</h3>
+        <p>
+          Wash according to your scalp, activity and hair needs.
+          Avoid using harsh products that leave your hair
+          excessively dry.
+        </p>
+      </article>
+
+      <article class="routine-card">
+        <div class="routine-number">02</div>
+        <h3>Moisturise</h3>
+        <p>
+          Use a suitable conditioner or moisturiser. Coily hair
+          often benefits from gentle, consistent moisture care.
+        </p>
+      </article>
+
+      <article class="routine-card">
+        <div class="routine-number">03</div>
+        <h3>Protect your style</h3>
+        <p>
+          Avoid unnecessary friction, excessive heat and
+          hairstyles that place too much tension on your scalp.
+        </p>
+      </article>
+
+    </div>
+
+    <img
+      class="routine-image"
+      src="https://images.pexels.com/photos/7388935/pexels-photo-7388935.jpeg?auto=compress&cs=tinysrgb&w=1600"
+      alt="Professional haircare and styling session for a Black male client"
+      loading="lazy"
+    >
+
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="guide-section">
+
+    <div class="guide-section-header">
+      <small>04 / THE GROOMING SHELF</small>
+      <h2>Know what you're buying.</h2>
+      <p>
+        Different products serve different purposes. Start with
+        what your hair actually needs instead of buying everything.
+      </p>
+    </div>
+
+    <div class="product-grid">
+
+      <article class="product-card">
+        <div class="product-icon">✦</div>
+        <h3>Shampoo</h3>
+        <p>Helps remove dirt, sweat and product buildup. Choose a gentle option suitable for your scalp.</p>
+      </article>
+
+      <article class="product-card">
+        <div class="product-icon">✦</div>
+        <h3>Conditioner</h3>
+        <p>Helps soften hair, improve manageability and reduce friction while detangling.</p>
+      </article>
+
+      <article class="product-card">
+        <div class="product-icon">✦</div>
+        <h3>Hair moisturiser</h3>
+        <p>Helps reduce dryness and improve the feel of your hair. Choose a formula suited to your texture.</p>
+      </article>
+
+      <article class="product-card">
+        <div class="product-icon">✦</div>
+        <h3>Wave brush</h3>
+        <p>A useful grooming tool for people maintaining waves. Select a brush that feels comfortable on your scalp.</p>
+      </article>
+
+    </div>
+
+    <div class="tip-highlight">
+      <h3>DON'T FALL FOR EVERY PRODUCT CLAIM</h3>
+      <p>
+        Expensive doesn't automatically mean better. Read the
+        ingredients, check the product seal and expiry date,
+        and follow the label. Stop using a product if it causes
+        irritation. Persistent scalp problems deserve professional
+        medical advice.
+      </p>
+    </div>
+
+  </section>
+
+  <!-- ABUJA DIRECTORY -->
+  <section class="abuja-section">
+    <div class="guide-section">
+
+      <div class="guide-section-header">
+        <small>05 / THE ABUJA GROOMING MAP</small>
+        <h2>Find your next grooming stop.</h2>
+        <p>
+          Explore selected Abuja barber listings and a grooming
+          equipment outlet. Confirm current services, opening
+          times and prices before visiting.
+        </p>
+      </div>
+
+      <div class="abuja-list">
+
+        <article class="abuja-card">
+          <small>BARBERSHOP / WUSE II</small>
+          <h3>A Gentleman's Quality Barbing Salon</h3>
+          <p>
+            Suite B8, Sherif Plaza, Aminu Kano Crescent,
+            Wuse II, Abuja, Nigeria.
+          </p>
+          <a class="directory-link"
+             href="https://www.finelib.com/cities/abuja/business/beauty-services/barbing-salons"
+             target="_blank" rel="noopener">
+            VIEW DIRECTORY LISTING →
+          </a>
+        </article>
+
+        <article class="abuja-card">
+          <small>BARBERSHOP / WUSE II</small>
+          <h3>Bentex Barbers</h3>
+          <p>
+            Shop BS215, Old Banex Plaza, Aminu Kano Crescent,
+            Wuse II, Abuja, Nigeria.
+          </p>
+          <a class="directory-link"
+             href="https://www.finelib.com/cities/abuja/business/beauty-services/barbing-salons"
+             target="_blank" rel="noopener">
+            VIEW DIRECTORY LISTING →
+          </a>
+        </article>
+
+        <article class="abuja-card">
+          <small>BARBERSHOP / KUBWA</small>
+          <h3>Big Brother Barber Shop</h3>
+          <p>
+            Nymex Plaza, No. 1 Sultan Dasuki Way,
+            Kubwa, Abuja, Nigeria.
+          </p>
+          <a class="directory-link"
+             href="https://www.finelib.com/cities/abuja/business/beauty-services/barbing-salons"
+             target="_blank" rel="noopener">
+            VIEW DIRECTORY LISTING →
+          </a>
+        </article>
+
+        <article class="abuja-card">
+          <small>GROOMING EQUIPMENT / KUBWA</small>
+          <h3>Chibest Barbing & Equipment Ltd</h3>
+          <p>
+            28 Abdullahi Hamza Street, Kubwa,
+            Abuja, Nigeria. Listed as a barbering equipment
+            and product outlet.
+          </p>
+          <a class="directory-link"
+             href="https://www.finelib.com/cities/abuja/business/beauty-services/barbing-salons"
+             target="_blank" rel="noopener">
+            VIEW DIRECTORY LISTING →
+          </a>
+        </article>
+
+        <article class="abuja-card">
+          <small>BARBERSHOP / GARKI II</small>
+          <h3>Davoe Barbing Home</h3>
+          <p>
+            Suite 1.10, BM House, Plot 1A,
+            S.L. Akintola Boulevard, Garki II, Abuja, Nigeria.
+          </p>
+          <a class="directory-link"
+             href="https://www.finelib.com/cities/abuja/business/beauty-services/barbing-salons"
+             target="_blank" rel="noopener">
+            VIEW DIRECTORY LISTING →
+          </a>
+        </article>
+
+        <article class="abuja-card">
+          <small>BARBERSHOP / WUSE ZONE 6</small>
+          <h3>De Barber Shop</h3>
+          <p>
+            Suite 5, Dayspring Hotel, Juba Street,
+            Zone 6, Wuse, Abuja, Nigeria.
+          </p>
+          <a class="directory-link"
+             href="https://www.finelib.com/cities/abuja/business/beauty-services/barbing-salons"
+             target="_blank" rel="noopener">
+            VIEW DIRECTORY LISTING →
+          </a>
+        </article>
+
+      </div>
+
+      <p class="directory-note">
+        Directory information is provided as a starting point,
+        not an endorsement. Business details can change.
+        Contact or verify a shop independently before travelling.
+      </p>
+
+      <p style="margin-top:20px;">
+        <a class="directory-link"
+           href="https://www.fresha.com/lp/en/bt/barbershops/in/ng-abuja"
+           target="_blank" rel="noopener">
+          EXPLORE MORE ABUJA BARBERS →
+        </a>
+      </p>
+
+    </div>
+  </section>
+
+  <!-- FINAL CALL TO ACTION -->
+  <section class="guide-bottom">
+    <div class="guide-kicker">YOUR NEXT LOOK STARTS HERE</div>
+    <h2>Ready for a fresh cut?</h2>
+    <p>
+      Find your style, prepare your grooming routine and book
+      your next BarberPro appointment.
+    </p>
+    <a href="booking.html" class="guide-button">
+      BOOK YOUR NEXT CUT
+    </a>
+  </section>
+
+  <div class="photo-credit">
+    Photography references: Pexels contributors John Diez,
+    INSYNCT MEDIA, and other credited photographers.
+    Images remain subject to their respective Pexels licence.
+  </div>
+
+  <footer class="site-footer">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">B</span>
+      <span>BARBER<span class="brand-accent">PRO</span></span>
+    </a>
+    <p>YOUR LOOK. YOUR TIME.</p>
+    <a href="booking.html">Book a cut</a>
+    <p class="copyright">© 2026 BarberPro. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
