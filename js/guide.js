@@ -16,7 +16,6 @@
   {page:"hairline.html",title:"Give your hairline thoughtful care",copy:"Read the hairline guidance and choose comfortable grooming habits.",target:"main"},
   {page:"products.html",title:"Explore grooming essentials",copy:"Learn what different grooming products are for and how to choose them thoughtfully.",target:".product-grid"},
   {page:"loyalty.html",title:"Make your visits count",copy:"Check your completed visits and understand how the BarberPro reward cycle works.",target:".loyalty-panel"},
-  {page:"index.html",title:"Your BarberPro starting point",copy:"From here, customers can sign in or create an account, then explore the BarberPro experience.",target:".auth-card"}
  ];
  const style=document.createElement("link");style.rel="stylesheet";style.href="css/guide.css?v=20261121b";document.head.appendChild(style);
  const root=document.createElement("section");root.className="bp-guide";root.setAttribute("aria-live","polite");
@@ -35,7 +34,8 @@
  const finish=()=>{clear();card.hidden=true;launch.hidden=false;try{localStorage.removeItem(progressKey);localStorage.setItem(seenKey,"1");}catch(_){}};
  const show=()=>{
   const step=steps[index];if(!step){finish();return;}
-  if(step.page!==current){save(index);location.href=step.page;return;}
+  save(index);
+  if(step.page!==current){location.href=step.page;return;}
   clear();title.textContent=step.title;copy.textContent=step.copy;count.textContent=(index+1)+" of "+steps.length;reading.textContent="Step "+(index+1)+" / "+steps.length+"  •  "+step.page.replace(".html","").replace(/-/g," ");fill.style.width=((index+1)/steps.length*100)+"%";next.textContent=index===steps.length-1?"Finish":"Next";
   active=step.target.split(",").map(s=>s.trim()).map(s=>document.querySelector(s)).find(Boolean)||null;
   card.hidden=false;launch.hidden=true;
