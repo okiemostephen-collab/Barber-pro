@@ -9,18 +9,18 @@
   "Afro Shape-up":{price:2500,img:"https://images.pexels.com/photos/9363463/pexels-photo-9363463.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Shaped natural afro with a crisp outline."},
   "Waves & Line-up":{price:3000,img:"https://images.pexels.com/photos/1327206/pexels-photo-1327206.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Defined waves finished with a clean edge."},
   "Haircut + Beard":{price:5000,img:"https://images.pexels.com/photos/25365033/pexels-photo-25365033.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Fresh cut and neatly shaped beard."},
-  "High Top Fade":{price:3500,img:"https://images.pexels.com/photos/8138146/pexels-photo-8138146.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Structured high top with faded sides."},
-  "Sponge Twists":{price:4000,img:"https://images.pexels.com/photos/28638400/pexels-photo-28638400.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Defined sponge twists with a neat taper."},
-  "Dreadlock Fade":{price:5000,img:"https://images.pexels.com/photos/7116213/pexels-photo-7116213.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Locs paired with a clean fade."},
-  "Cornrows with Fade":{price:5000,img:"https://images.pexels.com/photos/12474414/pexels-photo-12474414.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Neat braids with a crisp side fade."},
-  "Textured Crop":{price:3500,img:"https://images.pexels.com/photos/27685128/pexels-photo-27685128.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Short textured crop with a clean taper."},
-  "Buzz Cut + Beard":{price:5000,img:"https://images.pexels.com/photos/7447151/pexels-photo-7447151.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Close buzz cut with a shaped beard."},
+  "High Top Fade":{price:0,img:"https://images.pexels.com/photos/8138146/pexels-photo-8138146.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Structured high top with faded sides."},
+  "Sponge Twists":{price:0,img:"https://images.pexels.com/photos/28638400/pexels-photo-28638400.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Defined sponge twists with a neat taper."},
+  "Dreadlock Fade":{price:0,img:"https://images.pexels.com/photos/7116213/pexels-photo-7116213.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Locs paired with a clean fade."},
+  "Cornrows with Fade":{price:0,img:"https://images.pexels.com/photos/12474414/pexels-photo-12474414.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Neat braids with a crisp side fade."},
+  "Textured Crop":{price:0,img:"https://images.pexels.com/photos/27685128/pexels-photo-27685128.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Short textured crop with a clean taper."},
+  "Buzz Cut + Beard":{price:0,img:"https://images.pexels.com/photos/7447151/pexels-photo-7447151.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Close buzz cut with a shaped beard."},
  };
  const form=document.getElementById("bookingForm");if(!form)return;
  const select=document.getElementById("serviceSelect"),date=document.getElementById("appointmentDate"),msg=document.getElementById("bookingMessage"),btn=document.getElementById("bookingButton");
  const image=document.getElementById("selectedStyleImage"),title=document.getElementById("selectedStyleName"),description=document.getElementById("selectedStyleDescription");
  const today=new Date();date.min=[today.getFullYear(),String(today.getMonth()+1).padStart(2,"0"),String(today.getDate()).padStart(2,"0")].join("-");
- function showStyle(name){const s=styles[name];if(!s)return;title.textContent=name;description.textContent=s.desc+"  Price: ₦"+s.price.toLocaleString("en-NG");const xs=["0%","33.333%","66.667%","100%"],ys=["0%","50%","100%"];image.src=s.img;image.alt=name+" haircut inspiration photograph";}
+ function showStyle(name){const s=styles[name];if(!s)return;title.textContent=name;description.textContent=s.price>0?s.desc+"  Price: ₦"+s.price.toLocaleString("en-NG"):s.desc+"  This style is currently inspiration-only; its service price has not been confirmed.";const xs=["0%","33.333%","66.667%","100%"],ys=["0%","50%","100%"];image.src=s.img;image.alt=name+" haircut inspiration photograph";}
  const requested=new URLSearchParams(location.search).get("service");if(requested&&styles[requested]){select.value=requested;showStyle(requested);}
  select.addEventListener("change",()=>showStyle(select.value));
  form.addEventListener("submit",async e=>{e.preventDefault();btn.disabled=true;msg.textContent="Submitting your appointment…";try{
