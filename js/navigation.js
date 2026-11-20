@@ -1,0 +1,4 @@
+/* Floating accessible back control for all inner pages */
+(()=>{if(location.pathname.endsWith("/index.html")||location.pathname.endsWith("/")||document.querySelector(".back-control"))return;
+const b=document.createElement("button");b.type="button";b.className="back-control";b.setAttribute("aria-label","Go back to previous page");b.innerHTML="<span aria-hidden='true'>←</span><span>Back</span>";
+b.addEventListener("click",()=>{if(document.referrer&&new URL(document.referrer).origin===location.origin)history.back();else location.href=location.pathname.includes("/admin/")?"../index.html":"dashboard.html";});document.body.appendChild(b);})();
