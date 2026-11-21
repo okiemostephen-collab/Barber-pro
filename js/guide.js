@@ -1,4 +1,4 @@
-/* BarberPro guided customer journey — one tour across every customer page */
+/* BarberPro guided customer journey — manual, stable and page-aware */
 (()=>{
  const path=()=>location.pathname.split("/").pop()||"index.html";
  if(path()==="admin-dashboard.html")return;
@@ -15,11 +15,11 @@
   {page:"haircare.html",title:"Learn how to care for your hair",copy:"Explore practical haircare guidance to help you maintain your chosen style.",target:"main"},
   {page:"hairline.html",title:"Give your hairline thoughtful care",copy:"Read the hairline guidance and choose comfortable grooming habits.",target:"main"},
   {page:"products.html",title:"Explore grooming essentials",copy:"Learn what different grooming products are for and how to choose them thoughtfully.",target:".product-grid"},
-  {page:"loyalty.html",title:"Make your visits count",copy:"Check your completed visits and understand how the BarberPro reward cycle works.",target:".loyalty-panel"},
+  {page:"loyalty.html",title:"Make your visits count",copy:"Check your completed visits and understand how the BarberPro reward cycle works.",target:".loyalty-panel"}
  ];
- const style=document.createElement("link");style.rel="stylesheet";style.href="css/guide.css?v=20261121b";document.head.appendChild(style);
+ const style=document.createElement("link");style.rel="stylesheet";style.href="css/guide.css?v=20261121c";document.head.appendChild(style);
  const root=document.createElement("section");root.className="bp-guide";root.setAttribute("aria-live","polite");
- root.innerHTML='<button type="button" class="bp-guide-launch" aria-label="Open the full BarberPro guide"><span aria-hidden="true">☝</span> Need help?</button><div class="bp-guide-card" hidden><div class="bp-guide-top"><span class="bp-guide-kicker">BARBERPRO WALKTHROUGH</span><button type="button" class="bp-guide-close" aria-label="Pause guide">×</button></div><div class="bp-guide-progress"><span class="bp-guide-progress-fill"></span></div><p class="bp-guide-reading"></p><h2 class="bp-guide-title"></h2><p class="bp-guide-copy"></p><div class="bp-guide-actions"><span class="bp-guide-count"></span><button type="button" class="bp-guide-next">Next</button></div></div><span class="bp-guide-pointer" aria-hidden="true">⌄</span>';
+ root.innerHTML='<button type="button" class="bp-guide-launch" aria-label="Open the full BarberPro guide">Need help?</button><div class="bp-guide-card" hidden><div class="bp-guide-top"><span class="bp-guide-kicker">BARBERPRO WALKTHROUGH</span><button type="button" class="bp-guide-close" aria-label="Pause guide">×</button></div><div class="bp-guide-progress"><span class="bp-guide-progress-fill"></span></div><p class="bp-guide-reading"></p><h2 class="bp-guide-title"></h2><p class="bp-guide-copy"></p><div class="bp-guide-actions"><span class="bp-guide-count"></span><button type="button" class="bp-guide-next">Next</button></div></div><span class="bp-guide-pointer" aria-hidden="true" hidden>⌄</span>';
  document.body.appendChild(root);
  const nav=document.createElement("nav");nav.className="bp-quick-nav";nav.setAttribute("aria-label","BarberPro page shortcuts");
  nav.innerHTML='<a href="dashboard.html">Dashboard</a><a href="gallery.html">Haircuts</a><a href="booking.html">Book</a><a href="appointments.html">Appointments</a><a href="profile.html">Profile</a><a href="community.html">Community</a><a href="haircare.html">Haircare</a><a href="hairline.html">Hairline</a><a href="products.html">Products</a><a href="loyalty.html">Rewards</a><a href="index.html">Home</a>';
@@ -41,16 +41,14 @@
   card.hidden=false;launch.hidden=true;
   if(active){
    active.classList.add("bp-guide-highlight");
-   active.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"});
-   const place=()=>{const r=active.getBoundingClientRect();pointer.style.left=Math.max(12,Math.min(window.innerWidth-36,r.left+r.width/2-12))+"px";pointer.style.top=Math.max(8,r.top-36)+"px";};
-   place();setTimeout(place,350);pointer.hidden=false;
+   active.scrollIntoView({behavior:"auto",block:"center"});
+   const r=active.getBoundingClientRect();pointer.style.left=Math.max(12,Math.min(window.innerWidth-36,r.left+r.width/2-12))+"px";pointer.style.top=Math.max(8,r.top-30)+"px";pointer.hidden=false;
   }
  };
  launch.addEventListener("click",()=>{const saved=getSaved();if(saved!==null)index=saved;else{const found=steps.findIndex(s=>s.page===current);index=found<0?0:found;}show();});
  next.addEventListener("click",()=>{index++;if(index>=steps.length)finish();else show();});
  close.addEventListener("click",pause);
- window.addEventListener("resize",()=>{if(active&&!card.hidden){const r=active.getBoundingClientRect();pointer.style.left=Math.max(12,Math.min(window.innerWidth-36,r.left+r.width/2-12))+"px";pointer.style.top=Math.max(8,r.top-36)+"px";}});
- const saved=getSaved();
- if(saved!==null){index=saved;setTimeout(show,700);}
- else{let seen=false;try{seen=localStorage.getItem(seenKey)==="1";}catch(_){}if(!seen&&current==="dashboard.html"){index=0;setTimeout(show,900);}}
+ window.addEventListener("resize",()=>{if(active&&!card.hidden){const r=active.getBoundingClientRect();pointer.style.left=Math.max(12,Math.min(window.innerWidth-36,r.left+r.width/2-12))+"px";pointer.style.top=Math.max(8,r.top-30)+"px";}});
+ // Deliberately do not auto-start or auto-resume. The customer chooses when to open the guide.
+ try{if(localStorage.getItem(seenKey)==="1")launch.setAttribute("aria-label","Open the BarberPro guide again");}catch(_){}
 })();
