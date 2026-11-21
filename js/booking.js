@@ -5,10 +5,10 @@
  const styles={
   "Low Fade":{price:3000,img:"https://images.pexels.com/photos/7447151/pexels-photo-7447151.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Clean low fade with a sharp natural line-up."},
   "Mid Fade":{price:3500,img:"https://images.pexels.com/photos/4524960/pexels-photo-4524960.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Balanced mid fade with defined natural texture."},
-  "Burst Fade":{price:4000,img:"https://images.pexels.com/photos/4197944/pexels-photo-4197944.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Curved burst fade with a textured top."},
+  "Burst Fade":{price:3000,img:"https://images.pexels.com/photos/4197944/pexels-photo-4197944.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Curved burst fade with a textured top."},
   "Afro Shape-up":{price:2500,img:"https://images.pexels.com/photos/9363463/pexels-photo-9363463.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Shaped natural afro with a crisp outline."},
   "Waves & Line-up":{price:3000,img:"https://manualdohomemmoderno.com.br/files/2021/04/360-waves.jpg",desc:"Defined waves finished with a clean edge."},
-  "Haircut + Beard":{price:5000,img:"https://static.wixstatic.com/media/f933c8_58f64c71eda64ba9b8063469de4bc72b~mv2.jpeg/v1/crop/x_0%2Cy_872%2Cw_3024%2Ch_2530/fill/w_980%2Ch_820%2Cal_c%2Cq_85%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/IMG_5567_JPEG.jpeg",desc:"Fresh cut and neatly shaped beard."},
+  "Haircut + Beard":{price:3500,img:"https://static.wixstatic.com/media/f933c8_58f64c71eda64ba9b8063469de4bc72b~mv2.jpeg/v1/crop/x_0%2Cy_872%2Cw_3024%2Ch_2530/fill/w_980%2Ch_820%2Cal_c%2Cq_85%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/IMG_5567_JPEG.jpeg",desc:"Fresh cut and neatly shaped beard."},
   "High Top Fade":{price:0,img:"https://images.pexels.com/photos/8138146/pexels-photo-8138146.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Structured high top with faded sides."},
   "Sponge Twists":{price:0,img:"https://images.pexels.com/photos/28638400/pexels-photo-28638400.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Defined sponge twists with a neat taper."},
   "Dreadlock Fade":{price:0,img:"https://images.pexels.com/photos/25365033/pexels-photo-25365033.jpeg?auto=compress&cs=tinysrgb&w=1600",desc:"Locs paired with a clean fade."},
