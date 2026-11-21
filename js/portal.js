@@ -11,7 +11,7 @@
   window.logoutCustomer=async()=>{try{localStorage.removeItem(KEY);localStorage.removeItem("barberpro-appointments-v2");}catch(_){}const {error}=await db.auth.signOut();if(error)throw error;location.replace("index.html");};
   (async()=>{
    try{
-    const {data,error}=await timeout(db.auth.getSession(),10000,"Checking your login");if(error)throw error;
+    const {data,error}=await timeout(db.auth.getSession(),10000,"Checking your login");if(error){\n    const message=String(error.message||"").toLowerCase();\n    if(message.includes("refresh token")||message.includes("invalid jwt")||message.includes("session")){try{await db.auth.signOut({scope:"local"});}catch(_){}location.replace("index.html?session=expired");return;}\n    throw error;\n   }
     if(!data?.session){resolveReady({error:new Error("Your session has expired. Please sign in.")});const back=encodeURIComponent(location.pathname.split("/").pop()+location.search);location.replace("index.html?returnTo="+back);return;}
     const user=data.session.user;if(user.id===ADMIN){resolveReady({error:new Error("Administrator account detected.")});location.replace("admin/admin-dashboard.html");return;}
     window.barberProCustomer=user;const cached=cachedFor(user.id);let resolveProfile;
