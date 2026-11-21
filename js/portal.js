@@ -12,10 +12,10 @@
   (async()=>{
    try{
     const {data,error}=await timeout(db.auth.getSession(),10000,"Checking your login");if(error){
-    const message=String(error.message||"").toLowerCase();
-    if(message.includes("refresh token")||message.includes("invalid jwt")||message.includes("session")){try{await db.auth.signOut({scope:"local"});}catch(_){}location.replace("index.html?session=expired");return;}
-    throw error;
-   }
+     const message=String(error.message||"").toLowerCase();
+     if(message.includes("refresh token")||message.includes("invalid jwt")||message.includes("session")){try{await db.auth.signOut({scope:"local"});}catch(_){}location.replace("index.html?session=expired");return;}
+     throw error;
+    }
     if(!data?.session){resolveReady({error:new Error("Your session has expired. Please sign in.")});const back=encodeURIComponent(location.pathname.split("/").pop()+location.search);location.replace("index.html?returnTo="+back);return;}
     const user=data.session.user;if(user.id===ADMIN){resolveReady({error:new Error("Administrator account detected.")});location.replace("admin/admin-dashboard.html");return;}
     window.barberProCustomer=user;const cached=cachedFor(user.id);let resolveProfile;
@@ -23,8 +23,15 @@
     const ready={user,db,customerPromise,profileCached:!!cached};
     resolveReady(ready);document.dispatchEvent(new CustomEvent("barberpro:ready",{detail:ready}));
     try{
-     const result=await timeout(db.from("customers").select("id,full_name,phone").eq("auth_user_id",user.id).maybeSingle(),10000,"Loading your customer profile");
-     if(result.error)throw result.error;if(!result.data)throw new Error("Your customer profile is not linked to this login.");
+     let result=await timeout(db.from("customers").select("id,full_name,phone").eq("auth_user_id",user.id).maybeSingle(),10000,"Loading your customer profile");
+     if(result.error)throw result.error;
+     if(!result.data){
+      const metadata=user.user_metadata||{};
+      const fullName=String(metadata.full_name||metadata.name||"").trim()||String(user.email||"").split("@")[0]||"BarberPro Customer";
+      const phone=String(metadata.phone||"").trim()||"Not provided";
+      result=await timeout(db.from("customers").insert({auth_user_id:user.id,full_name:fullName,phone}).select("id,full_name,phone").single(),10000,"Creating your customer profile");
+      if(result.error)throw result.error;
+     }
      try{localStorage.setItem(KEY,JSON.stringify({uid:user.id,at:Date.now(),data:result.data}));}catch(_){}
      resolveProfile(result.data);document.dispatchEvent(new CustomEvent("barberpro:profile-updated",{detail:{profile:result.data}}));
     }catch(err){resolveProfile(cached||{__error:err});document.dispatchEvent(new CustomEvent("barberpro:profile-error",{detail:{error:err}}));}
